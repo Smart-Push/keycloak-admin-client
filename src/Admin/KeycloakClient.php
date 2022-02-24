@@ -294,6 +294,10 @@ class KeycloakClient extends GuzzleClient
             'baseUri'  => null,
             'verify'   => true,
             'token_storage' => new RuntimeTokenStorage(),
+            'callbackResultTransformer' => function ($response) {
+                $responseBody = $response->getBody()->getContents();
+                return json_decode($responseBody, true) ?? ['content' => $responseBody];
+            }
         );
 
         // Create client configuration
@@ -333,10 +337,7 @@ class KeycloakClient extends GuzzleClient
             new Serializer($description, [
                 "fullBody" => new FullBodyLocation()
             ]),
-            function ($response) {
-                $responseBody = $response->getBody()->getContents();
-                return json_decode($responseBody, true) ?? ['content' => $responseBody];
-            },
+            $config['callbackResultTransformer'],
             null,
             $config
         );
