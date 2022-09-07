@@ -162,7 +162,6 @@ use Keycloak\Admin\TokenStorages\RuntimeTokenStorage;
  * @method array getClientScopeProtocolMappersByProtocolName(array $args = array()) { @command Keycloak getClientScopeProtocolMappersByProtocolName }
  * @method array createClientProtocolMappers(array $args = array()) { @command Keycloak createClientProtocolMappers }
  * @method array createClientProtocolMapper(array $args = array()) { @command Keycloak createClientProtocolMapper }
- * @method array getClientProtocolMappers(array $args = array()) { @command Keycloak getClientProtocolMappers }
  * @method array getClientProtocolMapperById(array $args = array()) { @command Keycloak getClientProtocolMapperById }
  * @method array updateClientProtocolMapper(array $args = array()) { @command Keycloak updateClientProtocolMapper }
  * @method array deleteClientProtocolMapper(array $args = array()) { @command Keycloak deleteClientProtocolMapper }
@@ -271,6 +270,9 @@ use Keycloak\Admin\TokenStorages\RuntimeTokenStorage;
  * @method array addUserToGroup(array $args = array()) { @command Keycloak addUserToGroup }
  * @method array deleteUserFromGroup(array $args = array()) { @command Keycloak deleteUserFromGroup }
  * @method array resetUserPassword(array $args = array()) { @command Keycloak resetUserPassword }
+ * @method array getUserSessions(array $args = array()) { @command Keycloak getUserSessions }
+ *
+ * @method array syncUserStorage(array $args = array()) { @command Keycloak syncUserStorage }
  *
  */
 
@@ -331,7 +333,7 @@ class KeycloakClient extends GuzzleClient
         $description = new Description($serviceDescription);
 
         // Create the new Keycloak Client with our Configuration
-        return new self(
+        return new static(
             new Client($config),
             $description,
             new Serializer($description, [
